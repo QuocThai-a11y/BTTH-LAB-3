@@ -1,0 +1,32 @@
+#ifndef TAMGIAC_TG
+#define TAMGIAC_TG
+class Diem (
+    private:
+       double x;
+       double y;
+    public:
+    void tinhTien();
+    void Quay();
+    void PhongTo();
+    void ThuNho();
+    
+    )
+class cTamGiac {
+    private:
+    
+      Diem A;
+      Diem B;
+      Diem C;
+      bool KiemTraTamGiac;
+    public:
+    
+    cTamGiac( double a = 0, double b = 0, double c = 0);
+    double tinhDienTich()  ;
+    double tinhChuVi()  ;
+    void tinhTien;
+    void Quay();
+    void PhongTo();
+    void ThuNho(); 
+    
+};
+#endif
