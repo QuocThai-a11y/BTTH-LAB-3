@@ -18,6 +18,7 @@ class cTamGiac {
       Diem B;
       Diem C;
       bool KiemTraTamGiac;
+
     public:
     
     cTamGiac( double a = 0, double b = 0, double c = 0);
@@ -30,3 +31,59 @@ class cTamGiac {
     
 };
 #endif
+
+
+#include "TamGiac_tg"
+#include <iostream>
+#include <cmath>
+using namespace std;
+void Diem::nhap(){
+    cin >> x >> y ;
+}
+void Diem::xuat const (){
+    cout<< "(" << x << ", " << y << ")" ;
+}
+void Diem::tinhTien( double a , double b){
+   x += a ;
+   y += b ; 
+}
+void Diem::Quay( double rad ){
+    double x_moi = x*cos(rad) - y*sin(rad);
+    double y_moi = x*sin(rad) + y*cos(rad) ;
+    x = x_moi ; 
+    y = y_moi ;
+}
+bool Diem::tiLe( double k){
+    if( k > 1 ) return true ;
+    else ( k > 0 && k < 1 ) return false ; 
+}
+// Đến lớp cTamGiac
+void cTamGiac::KiemTraTamGiac( double AB , double BC , double AC ){
+    if( AB = BC || BC = AC || AC = AB) cout << " Day la tam giac can " << endl ;
+    else if( AB = BC = AC) cout << " day la tam giac deu " << endl ;
+    else if( AB*AB + BC*BC = AC*AC ||
+             AB*AB + AC*AC = BC*BC ||
+             AC*AC + BC*BC = AB*AB ) 
+             cout << " Day la tam giac vuong " << endl ;
+    else cout << " Day la tam giac thuong " << endl ;         
+}
+void cTamGiac::Nhap(){
+    cout << " Nhập tọa độ điểm A "<<A.nhap;
+    cout << " Nhập tọa độ đỉểm B "<<B.nhap;
+    cout << " Nhập tọa độ điểm C "<<C.nhap;
+}
+void cTamGiac::Xuat const (){
+    cout << "Tam giac: ";
+        A.xuat(); cout << ", ";
+        B.xuat(); cout << ", ";
+        C.xuat(); cout << endl;
+}
+double cTamGiac::tinhChuVi(double ab , double ac, double cb){
+    double chuVitg = ab + ac + cb ; 
+    cout << " Chu vi tam giac ABC la: " << chuVitg << endl ; 
+}
+double cTamGiac::tinhDienTich(double ab , double ac , double bc){
+    double p =( ab + ac + bc )/2 ;
+    double kp = sqrt(p(p-ab)(p-bc)(p-ac)) ;
+    cout << " Dien tich tam giac abc la: "<< kp << endl ; 
+}
