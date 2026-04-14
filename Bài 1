@@ -1,46 +1,53 @@
 #ifndef TAMGIAC_TG
 #define TAMGIAC_TG
-class Diem (
-    private:
-       double x;
-       double y;
+class Diem {
     public:
-    void tinhTien();
-    void Quay();
-    void PhongTo();
-    void ThuNho();
     
-    )
+    double x;
+    double y;
+    
+    Diem( double x1 = 0 , double y1 = 0 ): x(x1) , y(y1){}
+    void nhap() ;
+    void xuat() const ;
+    void tinhTien( double a , double b );
+    void Quay( double goc );
+    void tiLe( double k );
+    
+};
 class cTamGiac {
     private:
     
       Diem A;
       Diem B;
       Diem C;
-      bool KiemTraTamGiac;
+      double AB , AC , BC ;
+      void KiemTraTamGiac();
 
     public:
+    cTamGiac( Diem p1 =(0,0) , Diem p2 =(0,0) , Diem p3 = (0,0)): A(p1) , B(p2) , C(p3){}
     
-    cTamGiac( double a = 0, double b = 0, double c = 0);
+    void Nhap() ;
+    void TinhCanh() ;
     double tinhDienTich()  ;
     double tinhChuVi()  ;
-    void tinhTien;
-    void Quay();
-    void PhongTo();
-    void ThuNho(); 
-    
+    void tinhTien( double a , double b );
+    void Quay( double gocdo );
+    void PhongTo( double k );
+    void ThuNho(double k ); 
+    void Xuat() const ;
 };
 #endif
 
 
-#include "TamGiac_tg"
 #include <iostream>
 #include <cmath>
+#define M_PI 3.14159265358979323846
+#include "TamGiac.h"
 using namespace std;
 void Diem::nhap(){
     cin >> x >> y ;
 }
-void Diem::xuat const (){
+void Diem::xuat() const {
     cout<< "(" << x << ", " << y << ")" ;
 }
 void Diem::tinhTien( double a , double b){
@@ -48,42 +55,127 @@ void Diem::tinhTien( double a , double b){
    y += b ; 
 }
 void Diem::Quay( double rad ){
-    double x_moi = x*cos(rad) - y*sin(rad);
+    double x_moi = x*cos(rad) - y*sin(rad) ;
     double y_moi = x*sin(rad) + y*cos(rad) ;
     x = x_moi ; 
     y = y_moi ;
 }
-bool Diem::tiLe( double k){
-    if( k > 1 ) return true ;
-    else ( k > 0 && k < 1 ) return false ; 
+void Diem::tiLe( double k ){
+    x *= k ;
+    y *= k ; 
 }
 // Đến lớp cTamGiac
-void cTamGiac::KiemTraTamGiac( double AB , double BC , double AC ){
-    if( AB = BC || BC = AC || AC = AB) cout << " Day la tam giac can " << endl ;
-    else if( AB = BC = AC) cout << " day la tam giac deu " << endl ;
-    else if( AB*AB + BC*BC = AC*AC ||
-             AB*AB + AC*AC = BC*BC ||
-             AC*AC + BC*BC = AB*AB ) 
-             cout << " Day la tam giac vuong " << endl ;
-    else cout << " Day la tam giac thuong " << endl ;         
+void cTamGiac::TinhCanh(){
+    // Tim canh AB , AC , BC 
+    AB = sqrt( (A.x-B.x)*(A.x-B.x) + (A.y-B.y)*(A.y-B.y) ) ;
+    AC = sqrt( (A.x-C.x)*(A.x-C.x) + (A.y-C.y)*(A.y-C.y) ) ;
+    BC = sqrt( (B.x-C.x)*(B.x-C.x) + (B.y-C.y)*(B.y-C.y) ) ;
+}
+void cTamGiac::KiemTraTamGiac(){
+    while( AB + AC < BC && AC + BC < AB && AB + BC < AC ){
+        cout << " Tam giac khong thoa man dieu kien " << endl ; 
+        return ;
+    }
+if (abs(AB - BC) < 1e-9 && abs(BC - AC) < 1e-9) {
+        cout << "Day la tam giac deu." << endl;
+    } 
+else if (abs(AB - BC) < 1e-9 || abs(BC - AC) < 1e-9 || abs(AC - AB) < 1e-9) {
+        cout << "Day la tam giac can." << endl;
+    } 
+else if (abs(AB*AB + BC*BC - AC*AC) < 1e-5 || 
+               abs(AB*AB + AC*AC - BC*BC) < 1e-5 || 
+               abs(AC*AC + BC*BC - AB*AB) < 1e-5) {
+        cout << "Day la tam giac vuong." << endl;
+    } 
+else {
+        cout << "Day la tam giac thuong." << endl;
+    }
 }
 void cTamGiac::Nhap(){
-    cout << " Nhập tọa độ điểm A "<<A.nhap;
-    cout << " Nhập tọa độ đỉểm B "<<B.nhap;
-    cout << " Nhập tọa độ điểm C "<<C.nhap;
+    cout << " Nhap toa do diem A " ; A.nhap();
+    cout << " Nhap toa do diem B " ; B.nhap();
+    cout << " Nhap toa do diem C " ; C.nhap();
 }
-void cTamGiac::Xuat const (){
+void cTamGiac::Xuat() const {
     cout << "Tam giac: ";
         A.xuat(); cout << ", ";
         B.xuat(); cout << ", ";
         C.xuat(); cout << endl;
 }
-double cTamGiac::tinhChuVi(double ab , double ac, double cb){
-    double chuVitg = ab + ac + cb ; 
+double cTamGiac::tinhChuVi(){
+    TinhCanh();
+    double chuVitg = AB + AC + BC ; 
     cout << " Chu vi tam giac ABC la: " << chuVitg << endl ; 
 }
-double cTamGiac::tinhDienTich(double ab , double ac , double bc){
-    double p =( ab + ac + bc )/2 ;
-    double kp = sqrt(p(p-ab)(p-bc)(p-ac)) ;
+double cTamGiac::tinhDienTich(){
+    TinhCanh();
+    double p =( AB + AC + BC )/2 ;
+    double kp = sqrt( p*(p-AB)*(p-BC)*(p-AC) ) ;
     cout << " Dien tich tam giac abc la: "<< kp << endl ; 
+}
+void cTamGiac::tinhTien( double a, double b ){
+    A.tinhTien(a , b ) ;
+    B.tinhTien(a , b ) ;
+    C.tinhTien(a , b ) ;
+}
+void cTamGiac::Quay(double goc ){
+    double rad = goc*M_PI/180 ;
+    A.Quay(rad) ;
+    B.Quay(rad) ;
+    C.Quay(rad) ;
+}
+void cTamGiac::PhongTo( double K ){
+    A.tiLe(K) ; 
+    B.tiLe(K) ;
+    C.tiLe(K) ;
+}
+void cTamGiac::ThuNho( double K ){
+    A.tiLe(K) ; 
+    B.tiLe(K) ;
+    C.tiLe(K) ;
+}
+
+int main (){
+   cTamGiac tg_cu ;
+   double a_tinhTien , b_tinhTien ;
+   double gocquay ;
+   double tile_k ;
+   tg_cu.Nhap() ;
+   
+   cout << " Nhap gia tri a ,b tinh tien tam giac: "; cin >> a_tinhTien >> b_tinhTien ;
+   cout << endl;
+   cout << " Nhap gia tri goc de quay tam giac: "; cin>> gocquay ; cout << endl;
+   cout << " Nhap ti le k de phong to hay thu nho tam giac: " ; cin >> tile_k ;
+   cout << endl ;
+   while( gocquay < 0 ){
+       cout << "LOI!--Nhap lai goc muon quay( goc >= 0 ): " ;
+       cin >> gocquay ; cout << endl ;
+   }
+   while( tile_k <= 0 ){
+       cout << "LOI!--Nhap lai ti le k (k > 0): ";
+       cin >> tile_k ; cout << endl ; 
+   }
+   cTamGiac tg_moi = tg_cu ; // tao ban sao de luu tru gia tri ban dau 
+   tg_moi.tinhChuVi() ;
+   
+   tg_moi.tinhDienTich() ;
+   
+   tg_moi.tinhTien(a_tinhTien , b_tinhTien ) ;
+   tg_moi.Xuat() ;
+   
+   tg_moi = tg_cu ;
+   
+   tg_moi.Quay( gocquay ) ;
+   tg_moi.Xuat() ;
+   
+   tg_moi = tg_cu ;
+   
+   if( tile_k > 0 && tile_k < 1 ){
+       tg_moi.ThuNho( tile_k ) ;
+       tg_moi. Xuat() ;
+   }
+   else {
+       tg_moi.PhongTo( tile_k ) ;
+       tg_moi.Xuat() ;
+   }
 }
