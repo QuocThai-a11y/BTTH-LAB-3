@@ -22,14 +22,14 @@ class cTamGiac {
       Diem C;
       double AB , AC , BC ;
       void KiemTraTamGiac();
-
+      void TinhCanh() ;
     public:
-    cTamGiac( Diem p1 =(0,0) , Diem p2 =(0,0) , Diem p3 = (0,0)): A(p1) , B(p2) , C(p3){}
+    cTamGiac( Diem p1 =Diem(0,0) , Diem p2 =Diem(0,0) , Diem p3 =Diem(0,0)):A(p1) ,B(p2) ,C(p3){}
     
     void Nhap() ;
-    void TinhCanh() ;
-    double tinhDienTich()  ;
-    double tinhChuVi()  ;
+    
+    void tinhDienTich()  ;
+    void tinhChuVi()  ;
     void tinhTien( double a , double b );
     void Quay( double gocdo );
     void PhongTo( double k );
@@ -38,9 +38,9 @@ class cTamGiac {
 };
 #endif
 
-
 #include <iostream>
 #include <cmath>
+#include <iomanip>
 #define M_PI 3.14159265358979323846
 #include "TamGiac.h"
 using namespace std;
@@ -48,13 +48,13 @@ void Diem::nhap(){
     cin >> x >> y ;
 }
 void Diem::xuat() const {
-    cout<< "(" << x << ", " << y << ")" ;
+    cout<<fixed << setprecision(2) <<"(" << x << ", " << y << ")" ;
 }
-void Diem::tinhTien( double a , double b){
+void Diem::tinhTien( double a , double b){       // tịnh tiến x và y
    x += a ;
    y += b ; 
 }
-void Diem::Quay( double rad ){
+void Diem::Quay( double rad ){                 // hàm quay tam giác quanh gốc tọa độ (0 , 0 )
     double x_moi = x*cos(rad) - y*sin(rad) ;
     double y_moi = x*sin(rad) + y*cos(rad) ;
     x = x_moi ; 
@@ -72,64 +72,65 @@ void cTamGiac::TinhCanh(){
     BC = sqrt( (B.x-C.x)*(B.x-C.x) + (B.y-C.y)*(B.y-C.y) ) ;
 }
 void cTamGiac::KiemTraTamGiac(){
-    while( AB + AC < BC && AC + BC < AB && AB + BC < AC ){
-        cout << " Tam giac khong thoa man dieu kien " << endl ; 
-        return ;
+    TinhCanh() ;
+    if (AB + AC <= BC || AC + BC <= AB || AB + BC <= AC) {
+        cout << "Tam giac khong thoa man dieu kien. Nhap lai!" << endl;
+        Nhap() ;
     }
-if (abs(AB - BC) < 1e-9 && abs(BC - AC) < 1e-9) {
+    
+    if (abs(AB - BC) < 1e-9 && abs(BC - AC) < 1e-9) { // AB = AC = BC la tam giac deu
         cout << "Day la tam giac deu." << endl;
-    } 
-else if (abs(AB - BC) < 1e-9 || abs(BC - AC) < 1e-9 || abs(AC - AB) < 1e-9) {
+    } else if (abs(AB - BC) < 1e-9 || abs(BC - AC) < 1e-9 || abs(AC - AB) < 1e-9) { // kiem tra tam giac can
         cout << "Day la tam giac can." << endl;
-    } 
-else if (abs(AB*AB + BC*BC - AC*AC) < 1e-5 || 
+    } else if (abs(AB*AB + BC*BC - AC*AC) < 1e-5 ||    // kiem tra tam giac vuong
                abs(AB*AB + AC*AC - BC*BC) < 1e-5 || 
                abs(AC*AC + BC*BC - AB*AB) < 1e-5) {
         cout << "Day la tam giac vuong." << endl;
-    } 
-else {
-        cout << "Day la tam giac thuong." << endl;
+    } else {
+        cout << "Day la tam giac thuong." << endl;     //cac truong hop con lai la tam giac thuong
     }
 }
 void cTamGiac::Nhap(){
-    cout << " Nhap toa do diem A " ; A.nhap();
-    cout << " Nhap toa do diem B " ; B.nhap();
-    cout << " Nhap toa do diem C " ; C.nhap();
+    cout << " Nhap toa do diem A: " ; A.nhap();
+    cout << " Nhap toa do diem B: " ; B.nhap();
+    cout << " Nhap toa do diem C: " ; C.nhap();
+    TinhCanh() ;
+    KiemTraTamGiac() ; // kiem tra sau khi nhap 
 }
 void cTamGiac::Xuat() const {
     cout << "Tam giac: ";
-        A.xuat(); cout << ", ";
-        B.xuat(); cout << ", ";
+        A.xuat(); cout << ",";
+        B.xuat(); cout << ",";
         C.xuat(); cout << endl;
 }
-double cTamGiac::tinhChuVi(){
+void cTamGiac::tinhChuVi(){          // tinh chu vi
     TinhCanh();
     double chuVitg = AB + AC + BC ; 
     cout << " Chu vi tam giac ABC la: " << chuVitg << endl ; 
 }
-double cTamGiac::tinhDienTich(){
+void cTamGiac::tinhDienTich(){      // tinh dien tich
     TinhCanh();
     double p =( AB + AC + BC )/2 ;
     double kp = sqrt( p*(p-AB)*(p-BC)*(p-AC) ) ;
     cout << " Dien tich tam giac abc la: "<< kp << endl ; 
 }
-void cTamGiac::tinhTien( double a, double b ){
+void cTamGiac::tinhTien( double a, double b ){         // hàm tình tiến 
     A.tinhTien(a , b ) ;
     B.tinhTien(a , b ) ;
     C.tinhTien(a , b ) ;
 }
-void cTamGiac::Quay(double goc ){
+void cTamGiac::Quay(double goc ){      // hàm quay tam giác quanh gốc tọa độ (0 , 0 )
     double rad = goc*M_PI/180 ;
     A.Quay(rad) ;
     B.Quay(rad) ;
     C.Quay(rad) ;
 }
-void cTamGiac::PhongTo( double K ){
+void cTamGiac::PhongTo( double K ){   // Phóng to
     A.tiLe(K) ; 
     B.tiLe(K) ;
     C.tiLe(K) ;
 }
-void cTamGiac::ThuNho( double K ){
+void cTamGiac::ThuNho( double K ){  // thu nhỏ
     A.tiLe(K) ; 
     B.tiLe(K) ;
     C.tiLe(K) ;
@@ -137,16 +138,16 @@ void cTamGiac::ThuNho( double K ){
 
 int main (){
    cTamGiac tg_cu ;
+   tg_cu.Nhap() ;
+   
    double a_tinhTien , b_tinhTien ;
    double gocquay ;
    double tile_k ;
-   tg_cu.Nhap() ;
    
    cout << " Nhap gia tri a ,b tinh tien tam giac: "; cin >> a_tinhTien >> b_tinhTien ;
-   cout << endl;
-   cout << " Nhap gia tri goc de quay tam giac: "; cin>> gocquay ; cout << endl;
+   cout << " Nhap gia tri goc de quay tam giac: "; cin>> gocquay ; 
    cout << " Nhap ti le k de phong to hay thu nho tam giac: " ; cin >> tile_k ;
-   cout << endl ;
+   
    while( gocquay < 0 ){
        cout << "LOI!--Nhap lai goc muon quay( goc >= 0 ): " ;
        cin >> gocquay ; cout << endl ;
@@ -159,22 +160,24 @@ int main (){
    tg_moi.tinhChuVi() ;
    
    tg_moi.tinhDienTich() ;
-   
+   cout<< " Tam giac sau khi tinh tien la: "<<endl ;
    tg_moi.tinhTien(a_tinhTien , b_tinhTien ) ;
    tg_moi.Xuat() ;
    
    tg_moi = tg_cu ;
-   
+   cout<< " Tam giac sau khi quay: " << endl;
    tg_moi.Quay( gocquay ) ;
    tg_moi.Xuat() ;
    
    tg_moi = tg_cu ;
    
-   if( tile_k > 0 && tile_k < 1 ){
+   if( tile_k > 0 && tile_k < 1 ){                  // Khi biến  0 < k < 1 thì tam giác được thu nhỏ
+       cout <<" Tam giac sau khi thu to: "<< endl ;
        tg_moi.ThuNho( tile_k ) ;
        tg_moi. Xuat() ;
    }
-   else {
+   else {                                           // khi biến k > 1 tam giác phóng to
+       cout <<" Tam giac sau khi phong nho: " <<endl;
        tg_moi.PhongTo( tile_k ) ;
        tg_moi.Xuat() ;
    }
