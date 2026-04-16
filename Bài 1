@@ -71,11 +71,12 @@ void cTamGiac::TinhCanh(){
     AC = sqrt( (A.x-C.x)*(A.x-C.x) + (A.y-C.y)*(A.y-C.y) ) ;
     BC = sqrt( (B.x-C.x)*(B.x-C.x) + (B.y-C.y)*(B.y-C.y) ) ;
 }
-void cTamGiac::KiemTraTamGiac(){
+void cTamGiac::KiemTraTamGiac(){                 // Hàm kiểm tam giác 
     TinhCanh() ;
     if (AB + AC <= BC || AC + BC <= AB || AB + BC <= AC) {
         cout << "Tam giac khong thoa man dieu kien. Nhap lai!" << endl;
         Nhap() ;
+return ;
     }
     
     if (abs(AB - BC) < 1e-9 && abs(BC - AC) < 1e-9) { // AB = AC = BC la tam giac deu
