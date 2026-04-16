@@ -1,0 +1,189 @@
+#ifndef DAGIAC.h
+#define DAGIAC.h
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+class Diem {
+    public:
+    
+    double x;
+    double y;
+    
+    Diem( double x1 = 0 , double y1 = 0 ): x(x1) , y(y1){}
+    void nhap() ;
+    void xuat() const ;
+    void tinhTien( double a , double b );
+    void Quay( double goc );
+    void tiLe( double k );
+    
+};
+class cDaGiac {
+    private:
+    
+      vector<Diem> dsDinh ;
+      vector<double> dsCanh ;
+      void KiemTraDaGiac();
+      void TinhCanh() ;
+    public:
+    cDaGiac(){}
+    
+    void Nhap() ;
+    
+    void tinhDienTich()  ;
+    void tinhChuVi()  ;
+    void tinhTien( double a , double b );
+    void Quay( double gocdo );
+    void PhongTo( double k );
+    void ThuNho(double k ); 
+    void Xuat() const ;
+};
+#endif
+
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+#include <vector> 
+#define M_PI 3.14159265358979323846
+#include "DaGiac.h"
+using namespace std;
+void Diem::nhap(){
+    cin >> x >> y ;
+}
+void Diem::xuat() const {
+    cout<<fixed << setprecision(2) <<"(" << x << ", " << y << ")" ;
+}
+void Diem::tinhTien( double a , double b){       // tịnh tiến x và y
+   x += a ;
+   y += b ; 
+}
+void Diem::Quay( double rad ){                 // hàm quay tam giác quanh gốc tọa độ (0 , 0 )
+    double x_moi = x*cos(rad) - y*sin(rad) ;
+    double y_moi = x*sin(rad) + y*cos(rad) ;
+    x = x_moi ; 
+    y = y_moi ;
+}
+void Diem::tiLe( double k ){
+    x *= k ;
+    y *= k ; 
+}
+// Đến lớp cDaGiac
+void cTamGiac::TinhCanh(){
+    // Tim cac canh cua mot da giac 
+    dsCanh.clear();
+    int n = dsDinh.size();
+    for (int i = 0; i < n; i++) {
+        Diem d1 = dsDinh[i];
+        Diem d2 = dsDinh[(i + 1) % n];
+        double canh = sqrt(pow(d1.x - d2.x, 2) + pow(d1.y - d2.y, 2));
+        dsCanh.push_back(canh);
+    }
+
+}
+void cTamGiac::KiemTraDaGiac(){
+    TinhCanh() ;
+    // kiem tra da giac đều
+    // kiem tra da giac lồi
+    // kiem tra da giac lõm
+}
+void cTamGiac::Nhap(){
+    int soDinh ;
+    cout << "Nhap so luong dinh da giac: " ;
+    cin>> soDinh ;
+    Diem Dinh_tg ;
+    for( int i = 0 ; i < soDinh ; i++){
+        cout <<"\nNHap toa do diem " << char('A' + i)<< ": ";
+         Dinh_tg.nhap() ;
+         dsDinh.push_back(Dinh_tg) ;
+    }
+    TinhCanh() ;
+    TinhGoc() ;
+    KiemTraTamGiac() ; // kiem tra sau khi nhap 
+}
+void cTamGiac::Xuat() const {
+    cout << "Da giac: ";
+        for( int i = 0 ; i < dsDinh.size() ; i++){
+            dsDinh[i].xuat() ;
+            if(i < dsDinh.size() - 1) cout << ", ";
+        }
+}
+void cTamGiac::tinhChuVi(){          // tinh chu vi
+    TinhCanh();
+    for( int i = 0 ; i < dsCanh.size() ; i++){
+        double sum += dsCanh[i] ; 
+    }
+    cout << fixed << setprecision(4) <<"chu vi da giac: " << sum ;
+}
+void cTamGiac::tinhDienTich(){      // tinh dien tich
+    TinhCanh();
+    
+}
+void cTamGiac::tinhTien( double a, double b ){         // hàm tình tiến 
+    for( int i = 0 ; i < dsDinh.size() ;i++){
+        dsDinh[i].tinhTien( a, b) ;
+    }
+}
+void cTamGiac::Quay(double goc ){      // hàm quay tam giác quanh gốc tọa độ (0 , 0 )
+    double rad = goc*M_PI/180 ;
+    for( int i = 0 ; i < dsDinh.size() ;i++){
+        dsDinh[i].Quay( goc ) ;
+    }
+}
+void cTamGiac::PhongTo( double K ){   // Phóng to
+    for( int i = 0 ; i < dsDinh.size() ;i++){
+        dsDinh[i].tiLe( K ) ;
+    }
+}
+void cTamGiac::ThuNho( double K ){  // thu nhỏ
+    for( int i = 0 ; i < dsDinh.size() ;i++){ 
+        dsDinh[i].tiLe( K ) ;
+    }
+}
+
+int main (){
+   cTamGiac tg_cu ;
+   tg_cu.Nhap() ;
+   
+   double a_tinhTien , b_tinhTien ;
+   double gocquay ;
+   double tile_k ;
+   
+   cout << " Nhap gia tri a ,b tinh tien da giac: "; cin >> a_tinhTien >> b_tinhTien ;
+   cout << " Nhap gia tri goc de quay da giac: "; cin>> gocquay ; 
+   cout << " Nhap ti le k de phong to hay thu nho da giac: " ; cin >> tile_k ;
+   
+   while( gocquay < 0 ){
+       cout << "LOI!--Nhap lai goc muon quay( goc >= 0 ): " ;
+       cin >> gocquay ; cout << endl ;
+   }
+   while( tile_k <= 0 ){
+       cout << "LOI!--Nhap lai ti le k (k > 0): ";
+       cin >> tile_k ; cout << endl ; 
+   }
+   cTamGiac tg_moi = tg_cu ; // tao ban sao de luu tru gia tri ban dau 
+   tg_moi.tinhChuVi() ;
+   
+   tg_moi.tinhDienTich() ;
+   cout<< " da giac sau khi tinh tien la: "<<endl ;
+   tg_moi.tinhTien(a_tinhTien , b_tinhTien ) ;
+   tg_moi.Xuat() ;
+   
+   tg_moi = tg_cu ;
+   cout<< " da giac sau khi quay: " << endl;
+   tg_moi.Quay( gocquay ) ;
+   tg_moi.Xuat() ;
+   
+   tg_moi = tg_cu ;
+   
+   if( tile_k > 0 && tile_k < 1 ){                  // Khi biến  0 < k < 1 thì tam giác được thu nhỏ
+       cout <<" da giac sau khi thu to: "<< endl ;
+       tg_moi.ThuNho( tile_k ) ;
+       tg_moi. Xuat() ;
+   }
+   else {                                           // khi biến k > 1 tam giác phóng to
+       cout <<" da giac sau khi phong nho: " <<endl;
+       tg_moi.PhongTo( tile_k ) ;
+       tg_moi.Xuat() ;
+   }
+}
