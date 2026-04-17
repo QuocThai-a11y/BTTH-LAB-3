@@ -11,7 +11,7 @@ class Diem {   // Quản lý hệ số tọa độ 0xy
     void xuat() const ;
     void tinhTien( double a , double b );
     void Quay( double goc );
-    void tiLe( double k );
+    void tiLe( double k );    // tỉ lệ dùng để phóng to hay thu nhỏ 
     
 };
 class cTamGiac {
