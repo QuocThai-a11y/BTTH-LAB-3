@@ -69,7 +69,7 @@ void Diem::tiLe( double k ){
     y *= k ; 
 }
 // Đến lớp cDaGiac
-void cTamGiac::TinhCanh(){
+void cDaGiac::TinhCanh(){
     // Tim cac canh cua mot da giac 
     dsCanh.clear();
     int n = dsDinh.size();
@@ -81,13 +81,48 @@ void cTamGiac::TinhCanh(){
     }
 
 }
-void cTamGiac::KiemTraDaGiac(){
+void cDaGiac::KiemTraDaGiac(){
     TinhCanh() ;
-    // kiem tra da giac đều
-    // kiem tra da giac lồi
-    // kiem tra da giac lõm
+    if( dsDinh.size() < 3 ){  // kiem tra co phai la da giac khong
+        cout <<"\nDa giac khong hop le: " ;
+        break;
+        }
+    bool CanhBanhNhau = true ; // neu canh bang nhau la true
+    bool GocBanhNhau = true ;  // neu goc bang nhau la true 
+    bool cungDauDuong = true ;
+    bool cungDauAm = true ;
+    int n = dsDinh.size() ;
+    for( int i = 0 ; i < n ;i++ ){
+    double c1 = dsCanh[i] ;
+    double c2 = dsCanh[(i+1)%n] ;
+    
+    Diem d1 = dsDinh[(i + n -1)%n] ;                 // Dinh dung truoc
+    Diem d2 = dsDinh[i] ;                            // Dinh dung giua 
+    Diem d3 = dsDinh[(i+1)%n] ;                      // Dinh dung sau 
+    vector<double> dsGoc ;         // tao danh sach chua cac goc
+    // vector v1 = d1d2 , vector v2 = d2d3 
+    double v1x = d1.x-d2.x , v1y = d1.y-d2.y ;
+    double v2x = d2.x-d3.x , v2y = d2.y-d3.y ;
+    
+    
+    double dot = v1x*v2x -v1y*v2y ;           
+    double doLon_d1d2 = sqrt(pow(v1x ,2) + pow(v1y ,2)) ;
+    double doLon_d2d3 = sqrt(pow(v2x ,2) + pow(v2y ,2)) ;
+    double Goc = acos( dot/( doLon_d2d3*doLon_d1d2 ) ) ; // tich vo huong tim goc 
+    dsGoc.push_back(Goc) ;
+    // kiem tra tam giac deu 
+    if( abs(c1 - c2) > 1e-6) CanhBanhNhau = false ;
+    if ( abs( dsGoc[i] - dsGoc[(i+1)%n]) > 1e-6)  GocBanhNhau = false;
+    double det = v1x*v2y - v1y*v2x ; // tich co huong 
+    if( det > 0 ) cungDauAm = false ;
+    else if( det < 0 ) cungDauDuong =  false ;
+    }
+    if(CanhBanhNhau && GocBanhNhau ) cout <<"\nDay la da giac deu" ;
+    else if( cungDauDuong && cungDauAm ) cout << "\n Day la da giac lom" ;
+    else cout <<"\nDay la da giac loi" ;
+    
 }
-void cTamGiac::Nhap(){
+void cDaGiac::Nhap(){
     int soDinh ;
     cout << "Nhap so luong dinh da giac: " ;
     cin>> soDinh ;
@@ -97,52 +132,51 @@ void cTamGiac::Nhap(){
          Dinh_tg.nhap() ;
          dsDinh.push_back(Dinh_tg) ;
     }
-    TinhCanh() ;
-    TinhGoc() ;
-    KiemTraTamGiac() ; // kiem tra sau khi nhap 
+    KiemTraDaGiac() ; // kiem tra sau khi nhap 
 }
-void cTamGiac::Xuat() const {
+void cDaGiac::Xuat() const {
     cout << "Da giac: ";
         for( int i = 0 ; i < dsDinh.size() ; i++){
             dsDinh[i].xuat() ;
             if(i < dsDinh.size() - 1) cout << ", ";
         }
 }
-void cTamGiac::tinhChuVi(){          // tinh chu vi
+void cDaGiac::tinhChuVi(){          // tinh chu vi
     TinhCanh();
+    double sum = 0 ;
     for( int i = 0 ; i < dsCanh.size() ; i++){
-        double sum += dsCanh[i] ; 
+        sum += dsCanh[i] ; 
     }
-    cout << fixed << setprecision(4) <<"chu vi da giac: " << sum ;
+    cout << fixed << setprecision(4) <<"\nChu vi da giac: " << sum ;
 }
-void cTamGiac::tinhDienTich(){      // tinh dien tich
+void cDaGiac::tinhDienTich(){      // tinh dien tich
     TinhCanh();
-    
-}
-void cTamGiac::tinhTien( double a, double b ){         // hàm tình tiến 
-    for( int i = 0 ; i < dsDinh.size() ;i++){
-        dsDinh[i].tinhTien( a, b) ;
+    int n = dsDinh.size() ;
+    double sum = 0 ;
+    for( int i = 0 ; i < n ; i++ ){
+    Diem d1 = dsDinh[i] ;
+    Diem d2 = dsDinh[ (i +1) % n ] ;
+    sum += d1.x*d2.y ;
+    sum -= d2.x*d1.y ;
+    cout << fixed << setprecision(4) <<"\nDien tich da giac: " << abs( sum/2 ) ;
     }
 }
-void cTamGiac::Quay(double goc ){      // hàm quay tam giác quanh gốc tọa độ (0 , 0 )
+void cDaGiac::tinhTien( double a, double b ){         // hàm tình tiến 
+    for( auto &d: dsDinh ) d.tinhTien(a,b) ;
+    }
+void cDaGiac::Quay(double goc ){      // hàm quay tam giác quanh gốc tọa độ (0 , 0 )
     double rad = goc*M_PI/180 ;
-    for( int i = 0 ; i < dsDinh.size() ;i++){
-        dsDinh[i].Quay( goc ) ;
+    for( auto &d: dsDinh ) d.Quay(rad) ;
     }
-}
-void cTamGiac::PhongTo( double K ){   // Phóng to
-    for( int i = 0 ; i < dsDinh.size() ;i++){
-        dsDinh[i].tiLe( K ) ;
+void cDaGiac::PhongTo( double K ){   // Phóng to
+    for( auto &d: dsDinh ) d.tiLe(K) ;
     }
-}
-void cTamGiac::ThuNho( double K ){  // thu nhỏ
-    for( int i = 0 ; i < dsDinh.size() ;i++){ 
-        dsDinh[i].tiLe( K ) ;
+void cDaGiac::ThuNho( double K ){    // thu nhỏ
+    for( auto &d: dsDinh ) d.tiLe(K) ;
     }
-}
 
 int main (){
-   cTamGiac tg_cu ;
+   cDaGiac tg_cu ;
    tg_cu.Nhap() ;
    
    double a_tinhTien , b_tinhTien ;
@@ -161,7 +195,7 @@ int main (){
        cout << "LOI!--Nhap lai ti le k (k > 0): ";
        cin >> tile_k ; cout << endl ; 
    }
-   cTamGiac tg_moi = tg_cu ; // tao ban sao de luu tru gia tri ban dau 
+   cDaGiac tg_moi = tg_cu ; // tao ban sao de luu tru gia tri ban dau 
    tg_moi.tinhChuVi() ;
    
    tg_moi.tinhDienTich() ;
