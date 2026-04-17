@@ -1,6 +1,6 @@
 #ifndef TAMGIAC_TG
 #define TAMGIAC_TG
-class Diem {
+class Diem {   // Quản lý hệ số tọa độ 0xy
     public:
     
     double x;
