@@ -157,7 +157,7 @@ void cDaGiac::tinhDienTich(){      // tinh dien tich
     cout << fixed << setprecision(4) <<"\nDien tich da giac: " << abs( sum/2 ) ;
     }
 }
-void cDaGiac::tinhTien( double a, double b ){         // hàm tình tiến 
+void cDaGiac::tinhTien( double a, double b ){         // hàm tịnh tiến 
     for( auto &d: dsDinh ) d.tinhTien(a,b) ;
     }
 void cDaGiac::Quay(double goc ){      // hàm quay tam giác quanh gốc tọa độ (0 , 0 )
@@ -191,7 +191,7 @@ int main (){
        cout << "LOI!--Nhap lai ti le k (k > 0): ";
        cin >> tile_k ; cout << endl ; 
    }
-   cDaGiac tg_moi = tg_cu ; // tao ban sao de luu tru gia tri ban dau 
+   cDaGiac tg_moi = tg_cu ;                  // tạo bản sao để lưu giá trị ban đầu  
    tg_moi.tinhChuVi() ;
    
    tg_moi.tinhDienTich() ;
@@ -206,12 +206,12 @@ int main (){
    
    tg_moi = tg_cu ;
    
-   if( tile_k > 0 && tile_k < 1 ){                  // Khi biến  0 < k < 1 thì tam giác được thu nhỏ
+   if( tile_k > 0 && tile_k < 1 ){                  // Khi biến  0 < k < 1 da giác được thu nhỏ
        cout <<" da giac sau khi thu to: "<< endl ;
        tg_moi.ThuNho( tile_k ) ;
        tg_moi. Xuat() ;
    }
-   else {                                           // khi biến k > 1 tam giác phóng to
+   else {                                           // khi biến k > 1 da giác phóng to
        cout <<" da giac sau khi phong nho: " <<endl;
        tg_moi.PhongTo( tile_k ) ;
        tg_moi.Xuat() ;
