@@ -207,12 +207,12 @@ int main (){
    tg_moi = tg_cu ;
    
    if( tile_k > 0 && tile_k < 1 ){                  // Khi biến  0 < k < 1 da giác được thu nhỏ
-       cout <<" da giac sau khi phong to: "<< endl ;
+       cout <<" da giac sau khi thu nho: "<< endl ;
        tg_moi.ThuNho( tile_k ) ;
        tg_moi. Xuat() ;
    }
    else {                                           // khi biến k > 1 da giác phóng to
-       cout <<" da giac sau khi thu nho: " <<endl;
+       cout <<" da giac sau khi phong to: " <<endl;
        tg_moi.PhongTo( tile_k ) ;
        tg_moi.Xuat() ;
    }
