@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-
+using namespace std;
 class Diem {
     public:
     
@@ -85,7 +85,7 @@ void cDaGiac::KiemTraDaGiac(){
     TinhCanh() ;
     if( dsDinh.size() < 3 ){  // kiem tra co phai la da giac khong
         cout <<"\nDa giac khong hop le: " ;
-        break;
+        return ;
         }
     bool CanhBanhNhau = true ; // neu canh bang nhau la true
     bool GocBanhNhau = true ;  // neu goc bang nhau la true 
