@@ -1,5 +1,6 @@
 #ifndef Arryay_H
 #define Arryay_H
+#include <iostream>
 #include <vector> 
 using namespace std;
 class cArray{
@@ -8,14 +9,17 @@ class cArray{
     vector<int> dsSoNguyen ;
     
     public:
+    cArray(){}
+    
     void Nhap() ;
-    void Xuat() ;
+    void Xuat() const ;
     void DiemSoNguyen() ;
     bool Tangdan() ;
     void SNTMax() ;
     void SoLeMin() ;
     void SapXep() ;
     
+    ~cArray(){}
 };
 
 #endif
@@ -23,82 +27,126 @@ class cArray{
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "cArray"
+#include <algorithm>
+#include <climits>
+#include "cArray.h"
 using namespace std;
 
 void cArray::Nhap(){    // Nhap gia tri so nguyen
-    cout << " Nhap so luong so nguyen: ";
+    cout << " Nhap so luong phan tu: ";
     int n ;
     cin >> n ;
-    cout << " \nCac so nguyen gom: " ;
+    while( n <= 0 ){ 
+        cout << " So luong phan tu khong hop le!Nhap lai (n>0): " ;
+        cin>> n ;
+    }
+    
+    cout << " Nhap "<< n << " so nguyen gom: " ;
+    dsSoNguyen.clear() ;
+    dsSoNguyen.reserve(n) ;
     for( int i = 0 ; i < n ; i++){
     int SoNguyen ;
-    cin>> SoNguyen ;
-    dsSoNguyen.pushback(SoNguyen) ;
+    while( !(cin>> SoNguyen) ){
+       cout << " Nhap lai so ngyen: " ;
+    }
+    dsSoNguyen.push_back(SoNguyen) ;
     }
 }
-void cArray::Xuat( double a){    // Xuat gia tri so nguyen
-    cout << a << endl;
+
+void cArray::Xuat() const {    // Xuat gia tri so nguyen
+    cout << " { "
+    for ( int i = 0 ; i < dsSoNguyen.size(); i++){
+    cout << dsSoNguyen[i] << endl ;
+    if( i < dsSoNguyen.size() - 1) cout << ", " ;
+    }
+    cout << " }\n" ;
 }
-void DiemSoNguyen(){          // Diem so lan tung so nguyen 
+
+void cArray::DiemSoNguyen(){          // Diem so lan cua tung so nguyen 
+    int x ; 
+    cout << " Nhap gia tri can diem: " ;
+    cin >> x ; 
+    soLan = count( dsSoNguyen.begin() , dsSoNguyen.end() , x) ;
+    cout << " Gia tri " << x << " xuat hien " << soLan ;
     
 }
-bool Tangdan(){          // Kiem tra phan tu co tang dan khong
+bool cArray::Tangdan(){          // Kiem tra phan tu co tang dan khong
     for( int i = 0 ; i < dsSoNguyen.size()-1 ; i++){
         if( dsSoNguyen[i] > dsSoNguyen[i+1] ) return false ;
-        return true ; 
     }
+    return true ; 
 }
+
 bool SNT( int n ){      // tim so nguyen to 
     if(n < 2) return false ; 
-    for( int i = 0 ; i <= sqrt(n); i++){
+    for( int i = 2 ; i <= sqrt(n); i++){
         if( n%i ==0) return false ; 
             
         }
         return true ;
 }
 
-void SNTMax(){         // Tim so nguyen so lon nhat
+void cArray::SNTMax(){         // Tim so nguyen so lon nhat
     
-    vector<int> dsSNT ;
-    for( int i = 1 ; i < dsSoNguyen.size() ; i++){
-        int SoNguyen = dsSoNguyen[i] ;
-        if( SNT(SoNguyen) ){
-            dsSNT.pushback( SoNguyen ) ;
-            
+    int maxSNT = -1;
+    bool coSNT = false;
+    for (const auto& x : dsSoNguyen) {
+        if (SNT(x) && (x > maxSNT || !coSNT)) {
+            maxSNT = x;
+            coSNT = true;
         }
     }
-    
-    int a = dsSNT[0] ;
-    for( int i = 1 ; i < dsSNT.size() ;i++){
-        int b = dsSNT[i] ;
-        if( a < b ){
-            a = b ;
-        }
-    }
-    Xuat( a ) ;
+    if (coSNT)
+        cout << " So nguyen to lon nhat: " << maxSNT << endl;
+    else
+        cout << " Khong co so nguyen to nao!\n";
 }
-void SoLeMin(){               // ham tim so le nho nhat 
-    vector<int> dsSoLe ;
-    for( int i = 0 ; i < dsSoNguyen.size() ; i ++){
-        if( dsSoNguyen[i] % 2 == 0 ) continue;
-        dsSoLe.pushback( dsSoNguyen[i] ) ;
-    }
-    
-    for( int i = 1 ; i < dsSoLe.size() ; i++){
-        if( dsSoLe[i] < dsSoLe[0] ){
-            dsSoLe[0] = dsSoLe[i] ;
-        }
-    }
-    Xuat( dsSoLe[0] ) ;
-}
-void SapXep(){
-    
 }
 
-int main()
-{
-    std::cout<<"Hello World";
+void cArray::SoLeMin(){               // ham tim so le nho nhat 
+    bool coSoLe = false ;
+    int minLe = INT_MAX ; 
+    for( const auto& x : dsSoNguyen){
+        if( x%2 != 0 && x < minLe){
+            minLe = x ;
+            coSoLe = true ;
+        }
+    }
+    if( coSoLe ) 
+        cout << " So le nho nhat: "<< minLe << endl ; 
+    else 
+        cout << " khong co so le nao!\n" ;
+}
+void cArray::SapXep(){
+    int n = dsSoNguyen.size();
+    for (int i = 0; i < n - 1; i++) {
+        int min_idx = i;
+        for (int j = i + 1; j < n; j++) {
+            if (dsSoNguyen[j] < dsSoNguyen[min_idx])
+                min_idx = j;
+        }
+        if (min_idx != i)
+            swap(dsSoNguyen[i], dsSoNguyen[min_idx]);
+    }
+    cout << " Mang sau khi sap xep la: "
+    Xuat() ;
+}
 
+int main(){
+    cArray Mang ; 
+    Mang.Nhap() ;
+    cout << " Gia tri so nguyen cua mang mot chieu:"
+    Mang.Xuat() ;
+    
+    if(Mang.Tangdan())
+        cout << " Mang co thu tu tang dan\n" ;
+        
+    else
+        cout << " Mang khong co thu tu tang dan\n" ;
+        
+    Mang.DiemSoNguyen() ;
+    Mang.SNTMax() ;
+    Mang.SoLeMin() ;
+    Mang.SapXep() ;
     return 0;
 }
