@@ -13,10 +13,10 @@ class cArray{
     
     void Nhap() ;
     void Xuat() const ;
-    void DiemSoNguyen() ;
-    bool Tangdan() ;
-    void SNTMax() ;
-    void SoLeMin() ;
+    void DiemSoNguyen() const ;
+    bool Tangdan() const ;
+    void SNTMax() const ;
+    void SoLeMin() const ;
     void SapXep() ;
     
     ~cArray(){}
@@ -62,7 +62,7 @@ void cArray::Xuat() const {    // Xuat gia tri so nguyen
     cout << " }\n" ;
 }
 
-void cArray::DiemSoNguyen(){          // Diem so lan cua tung so nguyen 
+void cArray::DiemSoNguyen() const {          // Diem so lan cua tung so nguyen 
     int x ; 
     cout << " Nhap gia tri can diem: " ;
     cin >> x ; 
@@ -70,7 +70,7 @@ void cArray::DiemSoNguyen(){          // Diem so lan cua tung so nguyen
     cout << " Gia tri " << x << " xuat hien " << soLan ;
     
 }
-bool cArray::Tangdan(){          // Kiem tra phan tu co tang dan khong
+bool cArray::Tangdan() const {          // Kiem tra phan tu co tang dan khong
     for( int i = 0 ; i < dsSoNguyen.size()-1 ; i++){
         if( dsSoNguyen[i] > dsSoNguyen[i+1] ) return false ;
     }
@@ -86,7 +86,7 @@ bool SNT( int n ){      // tim so nguyen to
         return true ;
 }
 
-void cArray::SNTMax(){         // Tim so nguyen so lon nhat
+void cArray::SNTMax() const {         // Tim so nguyen so lon nhat
     
     int maxSNT = -1;
     bool coSNT = false;
@@ -103,7 +103,7 @@ void cArray::SNTMax(){         // Tim so nguyen so lon nhat
 }
 }
 
-void cArray::SoLeMin(){               // ham tim so le nho nhat 
+void cArray::SoLeMin() const {               // ham tim so le nho nhat 
     bool coSoLe = false ;
     int minLe = INT_MAX ; 
     for( const auto& x : dsSoNguyen){
