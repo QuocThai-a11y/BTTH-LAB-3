@@ -1,1 +1,104 @@
+#ifndef Arryay_H
+#define Arryay_H
+#include <vector> 
+using namespace std;
+class cArray{
+    
+    private:
+    vector<int> dsSoNguyen ;
+    
+    public:
+    void Nhap() ;
+    void Xuat() ;
+    void DiemSoNguyen() ;
+    bool Tangdan() ;
+    void SNTMax() ;
+    void SoLeMin() ;
+    void SapXep() ;
+    
+};
 
+#endif
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include "cArray"
+using namespace std;
+
+void cArray::Nhap(){    // Nhap gia tri so nguyen
+    cout << " Nhap so luong so nguyen: ";
+    int n ;
+    cin >> n ;
+    cout << " \nCac so nguyen gom: " ;
+    for( int i = 0 ; i < n ; i++){
+    int SoNguyen ;
+    cin>> SoNguyen ;
+    dsSoNguyen.pushback(SoNguyen) ;
+    }
+}
+void cArray::Xuat( double a){    // Xuat gia tri so nguyen
+    cout << a << endl;
+}
+void DiemSoNguyen(){          // Diem so lan tung so nguyen 
+    
+}
+bool Tangdan(){          // Kiem tra phan tu co tang dan khong
+    for( int i = 0 ; i < dsSoNguyen.size()-1 ; i++){
+        if( dsSoNguyen[i] > dsSoNguyen[i+1] ) return false ;
+        return true ; 
+    }
+}
+bool SNT( int n ){      // tim so nguyen to 
+    if(n < 2) return false ; 
+    for( int i = 0 ; i <= sqrt(n); i++){
+        if( n%i ==0) return false ; 
+            
+        }
+        return true ;
+}
+
+void SNTMax(){         // Tim so nguyen so lon nhat
+    
+    vector<int> dsSNT ;
+    for( int i = 1 ; i < dsSoNguyen.size() ; i++){
+        int SoNguyen = dsSoNguyen[i] ;
+        if( SNT(SoNguyen) ){
+            dsSNT.pushback( SoNguyen ) ;
+            
+        }
+    }
+    
+    int a = dsSNT[0] ;
+    for( int i = 1 ; i < dsSNT.size() ;i++){
+        int b = dsSNT[i] ;
+        if( a < b ){
+            a = b ;
+        }
+    }
+    Xuat( a ) ;
+}
+void SoLeMin(){               // ham tim so le nho nhat 
+    vector<int> dsSoLe ;
+    for( int i = 0 ; i < dsSoNguyen.size() ; i ++){
+        if( dsSoNguyen[i] % 2 == 0 ) continue;
+        dsSoLe.pushback( dsSoNguyen[i] ) ;
+    }
+    
+    for( int i = 1 ; i < dsSoLe.size() ; i++){
+        if( dsSoLe[i] < dsSoLe[0] ){
+            dsSoLe[0] = dsSoLe[i] ;
+        }
+    }
+    Xuat( dsSoLe[0] ) ;
+}
+void SapXep(){
+    
+}
+
+int main()
+{
+    std::cout<<"Hello World";
+
+    return 0;
+}
