@@ -39,21 +39,28 @@ void DaThuc::Nhap(){
 }
 void DaThuc::Xuat(){
     for( int i = soMu ; i >=0 ; i--){
-        if(dshangSo[i] == 0) continue ;
+        if(dshangSo[i] == 0) continue ;    // bo qua hang so bang 0
         else if( i == 0 || dshangSo[i] !=1 ) cout << dshangSo[i] ;
         
-        if( i > 0) cout  << "x"  ;
-        if( i > 1 ) cout <<"^" << i ;
-        if( dshangSo[i-1] != 0 || (i-1) != 0){
+        if( i > 0) cout  << "x"  ;         // so mu > 0, in bien x
+        if( i > 1 ) cout <<"^" << i ;        // so mu > 1, in dau ^ mu cho bien x 
+        if( dshangSo[i-1] != 0 || (i-1) != 0){       // khi so cuoi cung co gia tri bang 0, bo '+' va 0
         if( i-1 < soMu && i > 0 ) cout << (dshangSo[i] > 0 ? "+":"-") ;
         }   
         
     }
 }
+void TinhDaThuc(){
+    
+}
 int main(){
     DaThuc dt1 , dt2 ;
+    cout <<"Khai bao da thuc 1: " << endl;;
     dt1.Nhap() ;
     dt1.Xuat() ;
-
+    cout <<"Khai bao da thuc 2: "<< endl ;
+    dt2.Nhap() ;
+    dt2.Xuat() ;
+    
     return 0;
 }
