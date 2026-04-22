@@ -1,0 +1,59 @@
+
+#ifndef DATHUC_h
+#define DATHUC_h
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class DaThuc{
+    private:
+    
+    int soMu ;
+    vector<double> dshangSo ;
+    
+    public:
+    DaThuc( int mu = 0 ):soMu(mu) {}
+    void Nhap() ;
+    void Xuat() ;
+    void TinhDaThuc() ;
+    void Cong() ;
+    void Tru() ;
+};
+#endif
+
+#include <iostream>
+#include <vector>
+#include "DaThuc.h"
+using namespace std;
+
+void DaThuc::Nhap(){
+    cout << "Nhap bac cua da thuc: " ;
+    cin >> soMu ;
+    dshangSo.clear() ;
+    cout << "Nhap " << soMu+1 <<" he so cho da thuc: " ;
+    for(int i = 0 ; i <= soMu ; i++){
+        double a ; 
+        cin >> a ;
+        dshangSo.push_back( a ) ;
+    }
+}
+void DaThuc::Xuat(){
+    for( int i = soMu ; i >=0 ; i--){
+        if(dshangSo[i] == 0) continue ;
+        else if( i == 0 || dshangSo[i] !=1 ) cout << dshangSo[i] ;
+        
+        if( i > 0) cout  << "x"  ;
+        if( i > 1 ) cout <<"^" << i ;
+        if( dshangSo[i-1] != 0 || (i-1) != 0){
+        if( i-1 < soMu && i > 0 ) cout << (dshangSo[i] > 0 ? "+":"-") ;
+        }   
+        
+    }
+}
+int main(){
+    DaThuc dt1 , dt2 ;
+    dt1.Nhap() ;
+    dt1.Xuat() ;
+
+    return 0;
+}
