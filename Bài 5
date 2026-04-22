@@ -27,10 +27,10 @@ class DaThuc{
 using namespace std;
 
 void DaThuc::Nhap(){
-    cout << "Nhap bac cua da thuc: " ;
+    cout << " Nhap bac cua da thuc: " ;
     cin >> soMu ;
     dshangSo.clear() ;
-    cout << "Nhap " << soMu+1 <<" he so cho da thuc: " ;
+    cout << " Nhap " << soMu+1 <<" he so cho da thuc: " ;
     for(int i = 0 ; i <= soMu ; i++){
         double a ; 
         cin >> a ;
@@ -50,15 +50,22 @@ void DaThuc::Xuat(){
         
     }
 }
-void TinhDaThuc(){
-    
+void DaThuc::TinhDaThuc(){
+    cout <<" Nhap tri bien x: " ;
+    cin >> x ;
+    int sum = 0 ;
+    for( int i = soMu ; i >= 0 ; i-- ){
+        sum += dshangSo[i]*pow(x , i) ;
+    }
+    cout <<" Gia tri cua da thuc co gia tri P(" << x <<")= " <<sum << endl ;
+
 }
 int main(){
     DaThuc dt1 , dt2 ;
-    cout <<"Khai bao da thuc 1: " << endl;;
+    cout <<" Khai bao da thuc 1: " << endl;;
     dt1.Nhap() ;
     dt1.Xuat() ;
-    cout <<"Khai bao da thuc 2: "<< endl ;
+    cout <<" Khai bao da thuc 2: "<< endl ;
     dt2.Nhap() ;
     dt2.Xuat() ;
     
