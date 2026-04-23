@@ -38,6 +38,8 @@ void cArray::Nhap(){    // Nhap gia tri so nguyen
     cin >> n ;
     while( n <= 0 ){ 
         cout << " So luong phan tu khong hop le!Nhap lai (n>0): " ;
+        cin.clear();
+        cin.ignore(1000,'\n') ;
         cin>> n ;
     }
     
