@@ -23,6 +23,7 @@ class DaThuc{
 
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include "DaThuc.h"
 using namespace std;
 
