@@ -1,5 +1,5 @@
-#ifndef Arryay_H
-#define Arryay_H
+#ifndef Array_H
+#define Array_H
 #include <iostream>
 #include <vector> 
 using namespace std;
