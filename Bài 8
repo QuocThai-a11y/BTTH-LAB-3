@@ -1,0 +1,272 @@
+#ifndef NHANVIENSX_H
+#define NHANVIENSX_H
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Ngaysinh {
+private:
+    int ngay;
+    int thang;
+    int nam;
+
+public:
+    Ngaysinh(); // constructor mặc định
+
+    void Nhap();
+    void Xuat() const;
+
+    int getNam() const;
+
+    bool NamNhuan(int y) const;
+    int NgayvaThang(int m, int y) const;
+    bool KiemtraNgayThangNam() const;
+    
+    ~Ngaysinh(){}
+};
+
+class NhanVienSX {
+private:
+    string maNV;
+    string hovaTen;
+    Ngaysinh ngaySinh;
+    int soSanPhamGiaCong;
+    double donGiaSanPham;
+
+public:
+    NhanVienSX(); // constructor mặc định
+
+    void Nhap();
+    void Xuat() const;
+    double tinhLuong() const;
+
+    int getNgaySinh() const;
+    double getLuong() const;
+};
+
+#endif
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include "NhanVienSX.h"
+
+using namespace std;
+
+//
+// ===== CLASS NGAYSINH =====
+//
+
+Ngaysinh::Ngaysinh() {
+    ngay = 1;
+    thang = 1;
+    nam = 2000;
+}
+
+void Ngaysinh::Nhap() {
+    cin >> ngay >> thang >> nam;
+}
+
+void Ngaysinh::Xuat() const {
+    cout << ngay << "-" << thang << "-" << nam;
+}
+
+bool Ngaysinh::NamNhuan(int y) const {
+    return (y % 400 == 0 || (y % 4 == 0 && y % 100 != 0));
+}
+
+int Ngaysinh::NgayvaThang(int m, int y) const {
+    switch (m) {
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+            return 30;
+
+        case 2:
+            return NamNhuan(y) ? 29 : 28;
+
+        default:
+            return 31;
+    }
+}
+
+bool Ngaysinh::KiemtraNgayThangNam() const {
+    if (nam < 0 || thang < 1 || thang > 12)
+        return false;
+
+    if (ngay < 1 || ngay > NgayvaThang(thang, nam))
+        return false;
+
+    return true;
+}
+
+int Ngaysinh::getNam() const {
+    return nam;
+}
+
+//
+// ===== CLASS NHANVIENSX =====
+//
+
+NhanVienSX::NhanVienSX() {
+    maNV = "";
+    hovaTen = "";
+    soSanPhamGiaCong = 0;
+    donGiaSanPham = 0;
+}
+
+void NhanVienSX::Nhap()
+{
+    cout << "Nhap ma nhan vien: ";
+    cin >> maNV;
+    cin.ignore(1000, '\n');
+
+    cout << "Nhap ho va ten: ";
+    getline(cin, hovaTen);
+
+    cout << "Nhap ngay thang nam sinh (ngay thang nam): ";
+    ngaySinh.Nhap();
+
+    while (!ngaySinh.KiemtraNgayThangNam())
+    {
+        cout << "Ngay sinh khong hop le! Nhap lai: ";
+        ngaySinh.Nhap();
+    }
+
+    cout << "Nhap so san pham da gia cong: ";
+    cin >> soSanPhamGiaCong;
+
+    while (soSanPhamGiaCong < 0)
+    {
+        cout << "Nhap lai so san pham (>0): ";
+        cin >> soSanPhamGiaCong;
+    }
+
+    cout << "Nhap don gia moi san pham: ";
+    cin >> donGiaSanPham;
+
+    while (donGiaSanPham < 0)
+    {
+        cout << "Nhap lai don gia (>0): ";
+        cin >> donGiaSanPham;
+    }
+}
+void NhanVienSX::Xuat() const {
+    cout << "Ma nhan vien: " << maNV << endl;
+    cout << "Ho va ten: " << hovaTen << endl;
+
+    cout << "Ngay sinh: ";
+    ngaySinh.Xuat();
+    cout << endl;
+
+    cout << "So san pham gia cong: " << soSanPhamGiaCong << endl;
+    cout << "Don gia san pham: " << donGiaSanPham << endl;
+    cout << "Luong: " << tinhLuong() << endl;
+}
+
+double NhanVienSX::tinhLuong() const {
+    return soSanPhamGiaCong * donGiaSanPham;
+}
+
+int NhanVienSX::getNgaySinh() const {
+    return ngaySinh.getNam();
+}
+
+double NhanVienSX::getLuong() const {
+    return tinhLuong();
+}
+
+//
+// ===== MAIN =====
+//
+
+int main() {
+    int n;
+
+    cout << "Nhap so luong nhan vien san xuat: ";
+    cin >> n;
+
+    while (n <= 0) {
+        cout << "So luong phai > 0. Nhap lai: ";
+        cin >> n;
+    }
+
+    vector<NhanVienSX> ds(n);
+
+    for (int i = 0; i < n; i++) {
+        cout << "\nNhap thong tin nhan vien thu " << i + 1 << ":\n";
+        ds[i].Nhap();
+    }
+
+    //
+    // 1. Xuat danh sach
+    //
+    cout << "\n===== DANH SACH NHAN VIEN =====\n";
+
+    for (int i = 0; i < n; i++) {
+        cout << "\nNhan vien thu " << i + 1 << ":\n";
+        ds[i].Xuat();
+    }
+
+    //
+    // 2. Nhan vien lương thấp nhất
+    //
+    int min_index = 0;
+
+    for (int i = 1; i < n; i++) {
+        if (ds[i].getLuong() < ds[min_index].getLuong()) {
+            min_index = i;
+        }
+    }
+
+    cout << "\n===== NHAN VIEN LUONG THAP NHAT =====\n";
+    ds[min_index].Xuat();
+
+    //
+    // 3. Tổng lương
+    //
+    double tongLuong = 0;
+
+    for (int i = 0; i < n; i++) {
+        tongLuong += ds[i].getLuong();
+    }
+
+    cout << "\nTong luong cong ty phai tra: " << tongLuong << endl;
+
+    //
+    // 4. Nhân viên lớn tuổi nhất
+    //
+    int max_tuoi = 0;
+
+    for (int i = 1; i < n; i++) {
+        if (ds[i].getNgaySinh() < ds[max_tuoi].getNgaySinh()) {
+            max_tuoi = i;
+        }
+    }
+
+    cout << "\n===== NHAN VIEN LON TUOI NHAT =====\n";
+    ds[max_tuoi].Xuat();
+
+    //
+    // 5. Sắp xếp tăng dần theo lương
+    //
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (ds[i].getLuong() > ds[j].getLuong()) {
+                swap(ds[i], ds[j]);
+            }
+        }
+    }
+
+    cout << "\n===== DANH SACH SAU KHI SAP XEP TANG DAN THEO LUONG =====\n";
+
+    for (int i = 0; i < n; i++) {
+        cout << "\nNhan vien thu " << i + 1 << ":\n";
+        ds[i].Xuat();
+    }
+
+    return 0;
+}
