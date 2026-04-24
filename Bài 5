@@ -10,13 +10,15 @@ class DaThuc{
     vector<double> dshangSo ;
     
     public:
-    
+    DaThuc(){}
     void Nhap() ;
     void Xuat() const;
     double TinhGiaTri( double a) const ;
     void ChuanHoa() ;
     DaThuc operator+(const DaThuc& other) const ;
     DaThuc operator-(const DaThuc& other) const ;
+
+    ~DaThuc(){}
 };
 #endif
 
